@@ -20,7 +20,7 @@ namespace LAB2_2530019_1203819.Controllers
     {
         public DoubleLinkedList<Farmaco> List2;//mi lista aqui 
 
-         //base de datos
+        //base de datos
 
         //private readonly LAB2_2530019_1203819Context _context;
         private readonly Models.Data.Singleton F = Models.Data.Singleton.Instance;
@@ -166,7 +166,7 @@ namespace LAB2_2530019_1203819.Controllers
         private bool FarmacoExists(int id)
         {
             //return _context.Farmaco.Any(e => e.Id == id);
-            return true; 
+            return true;
         }
         public IActionResult Import()
         {
@@ -177,8 +177,8 @@ namespace LAB2_2530019_1203819.Controllers
         public async Task<IActionResult> Import(IFormFile file)
         {
 
-            int i=F.List2.Count();
-           
+            int i = F.List2.Count();
+
             if (file == null || file.Length == 0) return Content("file not selected");
             byte[] byts = new byte[file.Length];
             using (var strm = file.OpenReadStream())
@@ -203,23 +203,23 @@ namespace LAB2_2530019_1203819.Controllers
                     string precio;
                     string existencia;
                     id = line.Substring(0, line.IndexOf(","));
-                    string nuevoline= line.Substring(line.IndexOf(","), line.Length - line.IndexOf(","));
+                    string nuevoline = line.Substring(line.IndexOf(","), line.Length - line.IndexOf(","));
                     string n1;
-                    if (nuevoline.Substring(1,1) == "\"")
+                    if (nuevoline.Substring(1, 1) == "\"")
                     {
                         string[] part = nuevoline.Split("\"");
                         nombre = part[1];
-                         n1 = nuevoline.Substring(2, nuevoline.Length - 2);
-                        nuevoline = n1.Substring(n1.IndexOf("\"")+1, n1.Length - n1.IndexOf("\"")-1);
+                        n1 = nuevoline.Substring(2, nuevoline.Length - 2);
+                        nuevoline = n1.Substring(n1.IndexOf("\"") + 1, n1.Length - n1.IndexOf("\"") - 1);
                     }
                     else
                     {
                         string[] part = nuevoline.Split(",");
                         nombre = part[1];
-                         n1 = nuevoline.Substring(1, nuevoline.Length - 1);
+                        n1 = nuevoline.Substring(1, nuevoline.Length - 1);
                         nuevoline = n1.Substring(n1.IndexOf(","), n1.Length - n1.IndexOf(","));
                     }
-                    
+
                     if (nuevoline.Substring(1, 1) == "\"")
                     {
                         string[] part = nuevoline.Split("\"");
@@ -251,7 +251,7 @@ namespace LAB2_2530019_1203819.Controllers
                     string[] part2 = nuevoline.Split(",");
                     precio = part2[1];
                     n1 = nuevoline.Substring(1, nuevoline.Length - 1);
-                    nuevoline = n1.Substring(n1.IndexOf(","), n1.Length - n1.IndexOf(",")-1);
+                    nuevoline = n1.Substring(n1.IndexOf(","), n1.Length - n1.IndexOf(",") - 1);
                     string[] part3 = nuevoline.Split(",");
                     existencia = part3[1];
 
@@ -262,14 +262,30 @@ namespace LAB2_2530019_1203819.Controllers
                     nuevo.Casa_Productora = casa;
                     nuevo.Precio = Convert.ToDouble(precio.Substring(1, precio.Length - 1));
                     nuevo.Existencia = Convert.ToInt32(existencia);
-                   
+
                     F.List2.Add(nuevo);
                     i++;
                 }
             }
-            
-           
+
+
             return RedirectToAction(nameof(Index));
+        }
+        //GET
+        public IActionResult AgregarPedido(int? Id)
+        {
+            Farmaco nuevo = new Farmaco();
+            nuevo = F.List2.Find(m => m.Id == Id);
+            F.nombre = nuevo.Nombre_Farmaco;
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult AgregarPedido(int id, [Bind("Id,Cantidad")] PedidosFarmacos ProductModel)
+        {
+            ProductModel.Nombre = F.nombre;
+            F.Pedidos.Add(ProductModel);
+            return RedirectToAction("Index", "PedidosFarmacos");
         }
     }
 }

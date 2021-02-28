@@ -1,14 +1,17 @@
 ﻿@model IEnumerable<LAB2_2530019_1203819.Models.Farmaco>
 
-@{
-    ViewData["Title"] = "Index";
-}
+@{ ViewData["Title"] = "Index"; }
 
-<h1>Index</h1>
-
+<h1>Inventario</h1>
 <p>
-    <a asp-action="Create">Create New</a>
+    Selecione la busqueda que desea
 </p>
+<form asp-controller="Player" asp-action="Search">
+    <div class="input-group mb-3">
+        <input name="Param" type="text" class="form-control" placeholder="Escribir" aria-label="x" aria-describedby="basic-addon2">
+        <input type="submit" value="Buscar" class="btn btn-outline-dark">
+    </div>
+</form>
 <table class="table">
     <thead>
         <tr>
@@ -34,32 +37,31 @@
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Id)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Nombre_Farmaco)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Descripción_Farmaco)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Casa_Productora)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Existencia)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Precio)
-            </td>
-            <td>
-                @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
-                @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
-                @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
-            </td>
-        </tr>
-}
+        @foreach (var item in Model)
+        {
+<tr>
+    <td>
+        @Html.DisplayFor(modelItem => item.Id)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.Nombre_Farmaco)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.Descripción_Farmaco)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.Casa_Productora)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.Existencia)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.Precio)
+    </td>
+    <td>
+
+        @Html.ActionLink("AgregarPedido", "AgregarPedido", new { id = item.Id })
+    </td>
+</tr>}
     </tbody>
 </table>

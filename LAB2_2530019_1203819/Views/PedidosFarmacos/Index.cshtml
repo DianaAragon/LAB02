@@ -4,56 +4,62 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Index</h1>
+<h1>Carrito :D</h1>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
+<div class="input-group mb-3">
+    <div class="form-group">
+        <label for="Name">Nombre del Cliente</label>
+        <input type="text" name="nombredelacaja">
+    </div>
+    <div style="text-align: center;"><button style="position: absolute;top: 15%;Left: 70%;">Hello</button></div>
+    <form asp-controller="Farmacoes" asp-action="Index">
+        <div class="form-group">
+            <div style="text-align: center;"><button style="position: absolute;top: 15%;Left: 70%;">Agregar otro producto</button></div>
+        </div>
+    </form>
+</div>
+<div class="row">
+    <div class="form-group">
+        <label for="Name">Dirrecion</label>
+        <input type="text" name="nombredelacaja">
+    </div>
+</div>
+<div class="row">
+    <div class="form-group">
+        <label for="Name">Nit</label>
+        <input type="text" name="nombredelacaja">
+    </div>
+</div>
+
 <table class="table">
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Nombre_Cliente)
+                @Html.DisplayNameFor(model => model.Id)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Direccion)
+                @Html.DisplayNameFor(model => model.Nombre)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Nit)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Listado_Farmacos)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Total_Cancelar)
+                @Html.DisplayNameFor(model => model.Cantidad)
             </th>
             <th></th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Nombre_Cliente)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Direccion)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Nit)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Listado_Farmacos)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Total_Cancelar)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-            </td>
-        </tr>
-}
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Id)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Nombre)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Cantidad)
+                </td>
+            </tr>
+        }
     </tbody>
 </table>
