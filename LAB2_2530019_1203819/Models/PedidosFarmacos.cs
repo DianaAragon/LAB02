@@ -9,7 +9,14 @@ namespace LAB2_2530019_1203819.Models
     public class PedidosFarmacos
     {
         public int Id { get; set; }
-        public string Cantidad { get; set; }
+        [Required]
+        public string NombreDelCliente { get; set; }
+        [Required]
+        public string Dirrecion { get; set; }
+        [Required]
+        public int Nit { get; set; }
+        [Required]
+        public int Cantidad { get; set; }
         [Required]
         public string Nombre { get; set; }
 

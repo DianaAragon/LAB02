@@ -274,16 +274,46 @@ namespace LAB2_2530019_1203819.Controllers
         //GET
         public IActionResult AgregarPedido(int? Id)
         {
+            F.id = Convert.ToInt32(Id);
             Farmaco nuevo = new Farmaco();
             nuevo = F.List2.Find(m => m.Id == Id);
             F.nombre = nuevo.Nombre_Farmaco;
+            if (F.Nit == 0)
+            {
+                return RedirectToAction("AgregarPedido2", "Farmacoes");
+            }
             return View();
         }
 
         [HttpPost]
         public IActionResult AgregarPedido(int id, [Bind("Id,Cantidad")] PedidosFarmacos ProductModel)
         {
+            Farmaco nuevo = new Farmaco();
+            nuevo = F.List2.Find(m => m.Id == ProductModel.Id);
+            if (nuevo.Existencia < ProductModel.Cantidad)
+            {
+
+            }
             ProductModel.Nombre = F.nombre;
+            ProductModel.Nit = F.Nit;
+            ProductModel.NombreDelCliente = F.Nombrecliente;
+            ProductModel.Dirrecion = F.dirrecion;
+            F.Pedidos.Add(ProductModel);
+            return RedirectToAction("Index", "PedidosFarmacos");
+        }
+        //GET
+        public IActionResult AgregarPedido2()
+        {
+            return View();
+        }
+        [HttpPost]
+        public IActionResult AgregarPedido2(int id, [Bind("Id,NombreDelCliente,Dirrecion,Nit,Cantidad")] PedidosFarmacos ProductModel)
+        {
+            ProductModel.Id = F.id;
+            ProductModel.Nombre = F.nombre;
+            F.Nit = ProductModel.Nit;
+            F.Nombrecliente = ProductModel.NombreDelCliente;
+            F.dirrecion = ProductModel.Dirrecion;
             F.Pedidos.Add(ProductModel);
             return RedirectToAction("Index", "PedidosFarmacos");
         }
