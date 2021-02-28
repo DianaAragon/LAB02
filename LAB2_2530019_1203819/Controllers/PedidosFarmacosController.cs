@@ -13,6 +13,7 @@ namespace LAB2_2530019_1203819.Controllers
     public class PedidosFarmacosController : Controller
     {
         private readonly LAB2_2530019_1203819Context _context;
+        private readonly Models.Data.Singleton F = Models.Data.Singleton.Instance;
 
         public PedidosFarmacosController(LAB2_2530019_1203819Context context)
         {
@@ -20,10 +21,12 @@ namespace LAB2_2530019_1203819.Controllers
         }
 
         // GET: PedidosFarmacos
-        public async Task<IActionResult> Index()
+        public IActionResult Index()
         {
-            return View(await _context.PedidosFarmacos.ToListAsync());
+
+            return View(F.Pedidos);
         }
+
 
         // GET: PedidosFarmacos/Details/5
         public async Task<IActionResult> Details(int? id)
@@ -149,5 +152,8 @@ namespace LAB2_2530019_1203819.Controllers
         {
             return _context.PedidosFarmacos.Any(e => e.Id == id);
         }
+
+
+
     }
 }

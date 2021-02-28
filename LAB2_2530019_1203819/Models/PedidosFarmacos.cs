@@ -10,21 +10,15 @@ namespace LAB2_2530019_1203819.Models
     {
         public int Id { get; set; }
         [Required]
-        public string Nombre_Cliente { get; set; }
+        public string NombreDelCliente { get; set; }
         [Required]
-        public string Direccion { get; set; }
+        public string Dirrecion { get; set; }
         [Required]
-        public string Nit { get; set; }
+        public int Nit { get; set; }
         [Required]
-        public string Listado_Farmacos { get; set; }
+        public int Cantidad { get; set; }
         [Required]
-        public double Total_Cancelar  { get; set; }
+        public string Nombre { get; set; }
 
-
-
-
-
-
-       
     }
 }
