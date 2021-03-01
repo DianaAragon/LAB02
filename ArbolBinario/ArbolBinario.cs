@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace ArbolBinario
 {
-    public class ArbolBinario <T> 
+    public class ArbolBinario<T>
     {
         public ArbolBinario(Comparador<T> Funcomparador) //Esta es la funcion
         {
@@ -14,7 +14,7 @@ namespace ArbolBinario
 
         public void Add(T dato)
         {
-            if (root==null)
+            if (root == null)
             {
                 root = new Nodo<T>();
                 root.Value = dato;
@@ -26,7 +26,7 @@ namespace ArbolBinario
                     if (root.Left == null) //si no hay nada guardado que guarde el nuevo. 
                     {
                         root.Left = new Nodo<T>();
-                       root.Left.Value = dato;
+                        root.Left.Value = dato;
                     }
                     else
                     {
@@ -52,7 +52,7 @@ namespace ArbolBinario
         {
             if (comparador.Invoke(CurrentRoot.Value, dato) > 0) //si es currentroot es mayor que el dato 
             {
-                if (CurrentRoot.Left==null) //si no hay nada guardado que guarde el nuevo. 
+                if (CurrentRoot.Left == null) //si no hay nada guardado que guarde el nuevo. 
                 {
                     CurrentRoot.Left = new Nodo<T>();
                     CurrentRoot.Left.Value = dato;
@@ -79,13 +79,52 @@ namespace ArbolBinario
                 throw new Exception("Item repetido"); //ya que no puede haber otro con el mismo valor. 
             }
         }
+        public void RemoveAt(T dato)
+        {
+        }
+        private void RemoveAt(T dato, Nodo<T> currentRoot, Nodo<T> padre)
+        {
+            if (currentRoot is null) throw new Exception("No encontrado");
+            var comparacion = comparador.Invoke(currentRoot.Value, dato);
+            if (comparacion == 0)//ya encontro el que quiere borrar
+            {
+                if (currentRoot.EsHoja)
+                {
+                    if (comparador(padre.Left.Value, dato) == 0)//si es el de la izquierda el que quiere borrar
+                        padre.Left = null;
+                    else padre.Right = null;
+                }
+                else if (currentRoot.TieneDosHijos)
+                {
+
+                }
+                else
+                {
+                    if (currentRoot.Left != null)
+                    {
+                        if (comparador(padre.Left.Value, dato) == 0)//si es el de la izquierda el que quiere borrar
+                            padre.Left = currentRoot.Left;
+                        else padre.Right = currentRoot.Left;
+                    }
+                    else
+                    {
+                        if (comparador(padre.Left.Value, dato) == 0)//si es el de la izquierda el que quiere borrar
+                            padre.Left = currentRoot.Right;
+                        else padre.Right = currentRoot.Right;
+                    }
+                }
+            }
+            if (comparacion > 0) RemoveAt(dato, currentRoot.Left, currentRoot); //que busque en el hijo izquierdo
+            RemoveAt(dato, currentRoot.Right, currentRoot);
+        }
+
         public List<T> ConvertirLista()
         {
             var list = new List<T>(); //se crea la lista nueva de resultados
             ConvertirLista(list, root); //recursividad a la funcion privada ya con los valores agregados
             return list;
         }
-        private void ConvertirLista( List<T> lista, Nodo<T> CurrentRoot)
+        private void ConvertirLista(List<T> lista, Nodo<T> CurrentRoot)
         {
             if (CurrentRoot != null) //osea que si hay algo adentro
             {

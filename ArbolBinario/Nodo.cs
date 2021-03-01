@@ -15,5 +15,20 @@ namespace ArbolBinario
             this.Left = null;
             this.Right = null;
         }
+
+        public bool EsHoja
+        {
+            get
+            {
+                return Left is null && Right is null;
+            }
+        }
+        public bool TieneDosHijos
+        {
+            get
+            {
+                return Left != null && Right != null;
+            }
+        }
     }
 }

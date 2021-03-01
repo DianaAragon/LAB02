@@ -17,6 +17,7 @@ namespace LAB2_2530019_1203819.Models
         public int Nit { get; set; }
         [Required]
         public int Cantidad { get; set; }
+        public double Precio { get; set; }
         [Required]
         public string Nombre { get; set; }
 

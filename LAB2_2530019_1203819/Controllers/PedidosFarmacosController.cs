@@ -152,8 +152,5 @@ namespace LAB2_2530019_1203819.Controllers
         {
             return _context.PedidosFarmacos.Any(e => e.Id == id);
         }
-
-
-
     }
 }

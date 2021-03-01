@@ -6,12 +6,12 @@ using System.Collections.Generic;
 
 namespace DoubleLinkedListLibrary1
 {
-    public class DoubleLinkedList<T>:IEnumerable<T>
+    public class DoubleLinkedList<T> : IEnumerable<T>
     {
         Node<T> start;
         Node<T> end;
         int count;
-        int eleminados=0;
+        int eleminados = 0;
 
         public DoubleLinkedList()
         {
@@ -24,10 +24,10 @@ namespace DoubleLinkedListLibrary1
         {
             return count == 0;
         }
-        
+
         public void Add(T dato)
         {
-            Node<T> new_node= new Node<T>();
+            Node<T> new_node = new Node<T>();
             new_node.Value = dato;
 
             if (IsEmpty())
@@ -48,17 +48,15 @@ namespace DoubleLinkedListLibrary1
 
         public void RemoveAt(int index)
         {
-            
             Node<T> actual;
-            Node<T> anterior;
+            Node<T> anterior = null;
             actual = start;
             int i = 1;
-            while (actual != null && i < index-eleminados)
+            while (actual != null && i < index - eleminados)
             {
                 anterior = actual;
                 actual = actual.next;
                 i++;
-
             }
             if (actual == start)
             {
@@ -74,20 +72,32 @@ namespace DoubleLinkedListLibrary1
             }
             else
             {
-
                 actual.next = actual.next.next;
                 actual.next.Behind = actual;
                 eleminados++;
             }
         }
-        public void Posi(int index,T model)
+        public T GetbyIndex(int index)
+        {
+            Node<T> actual;
+            actual = start;
+            int i = 1;
+            while (actual != null && i < index)
+            {
+                actual = actual.next;
+                i++;
+            }
+            if (actual is null) throw new IndexOutOfRangeException();
+            return actual.Value;
+        }
+        public void Posi(int index, T model)
         {
             Node<T> new_node = new Node<T>();
             new_node.Value = model;
             Node<T> actual;
-            
-            Node<T> enfrente=null;
-            
+
+            Node<T> enfrente = null;
+
             if (index == 1)
             {
                 actual = start;
@@ -121,8 +131,8 @@ namespace DoubleLinkedListLibrary1
                     actual.next.next = enfrente;
                 }
             }
-           
-            
+
+
         }
         public T Find(Predicate<T> match)
         {
@@ -173,9 +183,10 @@ namespace DoubleLinkedListLibrary1
                 Node = Node.next;
             }
         }
-       IEnumerator IEnumerable.GetEnumerator()
+        IEnumerator IEnumerable.GetEnumerator()
         {
             return GetEnumerator();
         }
     }
 }
+
