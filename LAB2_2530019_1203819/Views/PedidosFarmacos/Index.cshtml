@@ -1,8 +1,6 @@
 ﻿@model IEnumerable<LAB2_2530019_1203819.Models.PedidosFarmacos>
 
-@{
-    ViewData["Title"] = "Index";
-}
+@{ ViewData["Title"] = "Index"; }
 
 <h1>Carrito :D</h1>
 
@@ -13,6 +11,14 @@
             <div style="text-align: center;"><button style="position: absolute;top: 5%;Left: 70%;">Agregar otro producto</button></div>
         </div>
     </form>
+    <div>
+        @{ double total = 0;
+                        foreach (var farmacox in Model)
+                        {
+                            total += farmacox.Precio * farmacox.Cantidad;
+                        } }
+
+    </div>
 </div>
 
 
@@ -28,23 +34,33 @@
             <th>
                 @Html.DisplayNameFor(model => model.Cantidad)
             </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Precio)
+            </th>
             <th></th>
         </tr>
     </thead>
     <tbody>
         @foreach (var item in Model)
         {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Id)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Nombre)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Cantidad)
-                </td>
-            </tr>
-        }
+<tr>
+    <td>
+        @Html.DisplayFor(modelItem => item.Id)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.Nombre)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.Cantidad)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.Precio)
+    </td>
+</tr>}
     </tbody>
 </table>
+<div>
+    <h4>Total ($):</h4>
+    @total
+</div>
+

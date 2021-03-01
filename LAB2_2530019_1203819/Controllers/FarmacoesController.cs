@@ -64,6 +64,16 @@ namespace LAB2_2530019_1203819.Controllers
             return View();
         }
 
+        public IActionResult Search(string nombreFarmaco)
+        {
+            LlaveArbol llave = F.Arbol_Farmacos.Find(new LlaveArbol { Nombre_Farmaco = nombreFarmaco });
+            if (llave == null) return View("ErrorCantidad");
+            var farmacoEncontrado = F.List2.GetbyIndex(llave.Fila);
+            var lis = new List<Farmaco>(1);// solo para que la lisa tenga una posicion como un arreglo
+            lis.Add(farmacoEncontrado);
+            return View("Index", lis);
+        }
+
         // POST: Farmacoes/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
@@ -73,11 +83,19 @@ namespace LAB2_2530019_1203819.Controllers
         {
             if (ModelState.IsValid)
             {
-                F.Arbol_Farmacos.Add(farmaco);
+                F.List2.Add(farmaco);
+                var numFila = F.List2.Count() - 1;
+                var LlaveArbol = new LlaveArbol
+                {
+                    Nombre_Farmaco = farmaco.Nombre_Farmaco,
+                    Fila = numFila
+                };
+                F.Arbol_Farmacos.Add(LlaveArbol);
                 return RedirectToAction(nameof(Index));
             }
             return View(farmaco);
         }
+
 
         // GET: Farmacoes/Edit/5
         public IActionResult Edit(int? id)
@@ -263,7 +281,23 @@ namespace LAB2_2530019_1203819.Controllers
                     nuevo.Precio = Convert.ToDouble(precio.Substring(1, precio.Length - 1));
                     nuevo.Existencia = Convert.ToInt32(existencia);
 
+
                     F.List2.Add(nuevo);
+                    var numFila = F.List2.Count();
+                    var LlaveArbol = new LlaveArbol
+                    {
+                        Nombre_Farmaco = nuevo.Nombre_Farmaco,
+                        Fila = numFila
+                    };
+                    try
+                    {
+                        F.Arbol_Farmacos.Add(LlaveArbol);
+                    }
+                    catch
+                    {
+                        F.List2.RemoveAt(numFila);
+                    }
+
                     i++;
                 }
             }
@@ -278,6 +312,7 @@ namespace LAB2_2530019_1203819.Controllers
             Farmaco nuevo = new Farmaco();
             nuevo = F.List2.Find(m => m.Id == Id);
             F.nombre = nuevo.Nombre_Farmaco;
+
             if (F.Nit == 0)
             {
                 return RedirectToAction("AgregarPedido2", "Farmacoes");
@@ -292,12 +327,13 @@ namespace LAB2_2530019_1203819.Controllers
             nuevo = F.List2.Find(m => m.Id == ProductModel.Id);
             if (nuevo.Existencia < ProductModel.Cantidad)
             {
-
+                return RedirectToAction("ErrorCantidad", "Farmacoes");
             }
             ProductModel.Nombre = F.nombre;
             ProductModel.Nit = F.Nit;
             ProductModel.NombreDelCliente = F.Nombrecliente;
             ProductModel.Dirrecion = F.dirrecion;
+            ProductModel.Precio = nuevo.Precio;
             F.Pedidos.Add(ProductModel);
             return RedirectToAction("Index", "PedidosFarmacos");
         }
@@ -310,12 +346,24 @@ namespace LAB2_2530019_1203819.Controllers
         public IActionResult AgregarPedido2(int id, [Bind("Id,NombreDelCliente,Dirrecion,Nit,Cantidad")] PedidosFarmacos ProductModel)
         {
             ProductModel.Id = F.id;
+            Farmaco nuevo = new Farmaco();
+            nuevo = F.List2.Find(m => m.Id == ProductModel.Id);
+            if (nuevo.Existencia < ProductModel.Cantidad)
+            {
+                return RedirectToAction("ErrorCantidad", "Farmacoes");
+            }
+
             ProductModel.Nombre = F.nombre;
             F.Nit = ProductModel.Nit;
             F.Nombrecliente = ProductModel.NombreDelCliente;
             F.dirrecion = ProductModel.Dirrecion;
+            ProductModel.Precio = nuevo.Precio;
             F.Pedidos.Add(ProductModel);
             return RedirectToAction("Index", "PedidosFarmacos");
+        }
+        public IActionResult ErrorCantidad()
+        {
+            return View();
         }
     }
 }
