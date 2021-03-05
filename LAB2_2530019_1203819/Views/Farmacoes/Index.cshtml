@@ -4,7 +4,7 @@
 
 <h1 style="color:lightgreen">Inventario</h1>
 <p>
-    Realice la búsqueda por nombre que desea realizar
+    Realice la búsqueda por nombre que desea realizar(Asegurarse que el nombre sea exacto y sin espacios al final y al comienzo)
 </p>
 <form asp-controller="Farmacoes" asp-action="Search">
     <div class="input-group mb-3">
@@ -61,8 +61,8 @@
     <td>
 
         @Html.ActionLink("AgregarPedido", "AgregarPedido", new { id = item.Id })
+
     </td>
-</tr>
-}
+</tr>}
     </tbody>
 </table>

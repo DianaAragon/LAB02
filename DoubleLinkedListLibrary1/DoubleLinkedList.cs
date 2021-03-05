@@ -11,13 +11,14 @@ namespace DoubleLinkedListLibrary1
         Node<T> start;
         Node<T> end;
         int count;
-        int eleminados = 0;
+        int eleminados;
 
         public DoubleLinkedList()
         {
             start = null;
             end = null;
             count = 0;
+            eleminados = 0;
         }
 
         bool IsEmpty()
@@ -173,6 +174,17 @@ namespace DoubleLinkedListLibrary1
 
             return count;
         }
+        public int EleCount()
+        {
+
+            return eleminados;
+        }
+        public void eleiminartodo()
+        {
+            start = null;
+            end = null;
+            count = 0;
+        }
 
         public IEnumerator<T> GetEnumerator()
         {
@@ -189,4 +201,5 @@ namespace DoubleLinkedListLibrary1
         }
     }
 }
+
 
