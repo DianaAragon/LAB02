@@ -20,9 +20,11 @@ namespace LAB2_2530019_1203819.Models.Data
         public string dirrecion = "";
         public int id;
 
+        public Random random;
 
         private Singleton()
         {
+            random = new Random();
             Pedidos = new DoubleLinkedList<PedidosFarmacos>();
             Arbol_Farmacos = new ArbolBinario<LlaveArbol>(LlaveArbol.Compare_Llave_Arbol); //Se inicializa el arbol binario por nombre de farmaco
             List2 = new DoubleLinkedList<Farmaco>();
@@ -37,4 +39,5 @@ namespace LAB2_2530019_1203819.Models.Data
         }
     }
 }
+
 

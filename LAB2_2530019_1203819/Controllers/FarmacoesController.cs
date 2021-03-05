@@ -67,7 +67,7 @@ namespace LAB2_2530019_1203819.Controllers
         public IActionResult Search(string nombreFarmaco)
         {
             LlaveArbol llave = F.Arbol_Farmacos.Find(new LlaveArbol { Nombre_Farmaco = nombreFarmaco });
-            if (llave == null) return View("ErrorCantidad");
+            if (llave == null) return View("ErrorBusqueda");
             var farmacoEncontrado = F.List2.GetbyIndex(llave.Fila);
             var lis = new List<Farmaco>(1);// solo para que la lisa tenga una posicion como un arreglo
             lis.Add(farmacoEncontrado);
@@ -151,7 +151,7 @@ namespace LAB2_2530019_1203819.Controllers
         }
 
         // GET: Farmacoes/Delete/5
-        public IActionResult Delete(int? id)
+        public IActionResult Delete(string? nombre)
         {
             //if (id == null)
             //{
@@ -166,6 +166,7 @@ namespace LAB2_2530019_1203819.Controllers
             //}
 
             //return View(farmaco);
+
             return RedirectToAction(nameof(Index));
         }
 
@@ -335,6 +336,15 @@ namespace LAB2_2530019_1203819.Controllers
             ProductModel.Dirrecion = F.dirrecion;
             ProductModel.Precio = nuevo.Precio;
             F.Pedidos.Add(ProductModel);
+
+            F.List2.Find(m => m.Id == ProductModel.Id).Existencia = nuevo.Existencia - ProductModel.Cantidad;
+            if (nuevo.Existencia == 0)
+            {
+                var llave = F.Arbol_Farmacos.Find(new LlaveArbol { Nombre_Farmaco = nuevo.Nombre_Farmaco });
+                F.Arbol_Farmacos.RemoveAt(llave);
+
+            }
+
             return RedirectToAction("Index", "PedidosFarmacos");
         }
         //GET
@@ -359,11 +369,45 @@ namespace LAB2_2530019_1203819.Controllers
             F.dirrecion = ProductModel.Dirrecion;
             ProductModel.Precio = nuevo.Precio;
             F.Pedidos.Add(ProductModel);
+
+            F.List2.Find(m => m.Id == ProductModel.Id).Existencia = nuevo.Existencia - ProductModel.Cantidad;
+            if (nuevo.Existencia == 0)
+            {
+                var llave = F.Arbol_Farmacos.Find(new LlaveArbol { Nombre_Farmaco = nuevo.Nombre_Farmaco });
+                F.Arbol_Farmacos.RemoveAt(llave);
+
+            }
             return RedirectToAction("Index", "PedidosFarmacos");
         }
         public IActionResult ErrorCantidad()
         {
             return View();
+        }
+        public IActionResult ErrorBusqueda()
+        {
+            return View();
+        }
+
+        public IActionResult Compra_Finalizada()
+        {
+            F.Nit = 0;
+            F.dirrecion = "";
+            F.Nombrecliente = "";
+            F.Pedidos.eleiminartodo();
+            var llave = new LlaveArbol();
+            for (int i = 1; i <= F.List2.Count() - F.List2.EleCount(); i++)
+            {
+                var ProductModel = F.List2.GetbyIndex(i);
+                llave.Fila = i;
+                llave.Nombre_Farmaco = ProductModel.Nombre_Farmaco;
+                if (ProductModel.Existencia == 0)
+                {
+                    F.List2.Find(m => m.Id == ProductModel.Id).Existencia = F.random.Next(1, 15);
+                    F.Arbol_Farmacos.Add(llave);
+                }
+            }
+            return View();
+
         }
     }
 }
