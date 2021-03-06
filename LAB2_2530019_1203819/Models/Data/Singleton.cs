@@ -19,6 +19,7 @@ namespace LAB2_2530019_1203819.Models.Data
         public String Nombrecliente = "";
         public string dirrecion = "";
         public int id;
+        public int eliminados = 0;
 
         public Random random;
 

@@ -52,6 +52,7 @@ namespace DoubleLinkedListLibrary1
             Node<T> actual;
             Node<T> anterior = null;
             actual = start;
+            
             int i = 1;
             while (actual != null && i < index - eleminados)
             {
@@ -82,10 +83,11 @@ namespace DoubleLinkedListLibrary1
         {
             Node<T> actual;
             actual = start;
+            int cuantos = Count();
             int i = 1;
             while (actual != null && i < index)
             {
-                actual = actual.next;
+                actual=actual.next;
                 i++;
             }
             if (actual is null) throw new IndexOutOfRangeException();
@@ -174,6 +176,11 @@ namespace DoubleLinkedListLibrary1
 
             return count;
         }
+        public int Count2()
+        {
+            return count - eleminados;
+        }
+
         public int EleCount()
         {
 
