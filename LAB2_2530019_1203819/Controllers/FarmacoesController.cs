@@ -222,6 +222,8 @@ namespace LAB2_2530019_1203819.Controllers
                     string precio;
                     string existencia;
                     id = line.Substring(0, line.IndexOf(","));
+                    int id2;
+                    id2 =Convert.ToInt32(id) - F.eliminados;
                     string nuevoline = line.Substring(line.IndexOf(","), line.Length - line.IndexOf(","));
                     string n1;
                     if (nuevoline.Substring(1, 1) == "\"")
@@ -275,7 +277,7 @@ namespace LAB2_2530019_1203819.Controllers
                     existencia = part3[1];
 
                     Farmaco nuevo = new Farmaco();
-                    nuevo.Id = Convert.ToInt32(id);
+                    nuevo.Id = id2;
                     nuevo.Nombre_Farmaco = nombre;
                     nuevo.Descripción_Farmaco = descripcion;
                     nuevo.Casa_Productora = casa;
@@ -285,10 +287,11 @@ namespace LAB2_2530019_1203819.Controllers
 
                     F.List2.Add(nuevo);
                     var numFila = F.List2.Count();
+                    var numfila2 =F.List2.Count2();
                     var LlaveArbol = new LlaveArbol
                     {
                         Nombre_Farmaco = nuevo.Nombre_Farmaco,
-                        Fila = numFila
+                        Fila = numfila2
                     };
                     try
                     {
@@ -297,6 +300,7 @@ namespace LAB2_2530019_1203819.Controllers
                     catch
                     {
                         F.List2.RemoveAt(numFila);
+                        F.eliminados += 1;
                     }
 
                     i++;
